@@ -12,6 +12,7 @@ struct EditTaskView: View {
     //MARK: - Propirties
     @EnvironmentObject var vm: ViewModel
     @Environment(\.dismiss) private var dismiss
+    var task: TaskModel
     
     //MARK: - Body
     var body: some View {
@@ -36,19 +37,23 @@ struct EditTaskView: View {
                     .padding(.vertical)
             }//hs
             
+            //Save
             CustomTextField(placeholder: "Edit Your Task")
             CustomButton(titleButton: "Save") {
-                //
+                vm.updateTask(id: task.id, taskTitle: vm.newTask)
             }
             Spacer()
         }//vs
         .padding()
         .background(BackgroundView())
+        .onAppear{
+            vm.newTask = task.taskTitle
+        }
     }//body
 }//view
 
 #Preview {
-    EditTaskView()
+    EditTaskView(task: TaskModel(taskTitle: "Task 1"))
         .environmentObject(ViewModel())
         .preferredColorScheme(.dark)
 }
